@@ -1,0 +1,619 @@
+\documentclass[12pt]{article}
+\usepackage{tikz,amsmath, amssymb,bm,color,dsfont}
+\usepackage[margin=0cm,nohead]{geometry}
+\usepackage[active,tightpage]{preview}
+\usetikzlibrary{shapes,arrows}
+% needed for BB
+\usetikzlibrary{calc}
+
+\PreviewEnvironment{tikzpicture}
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathreplacing}
+
+\newcommand{\bb}[2]{
+	\!\!{\tt #1}
+	\\[6pt]
+	~{\large \color{blue} #2}
+}
+\newcommand{\bbb}[3]{
+	\!\!{\tt #1}
+	\\[6pt]
+	~{\large \color{blue} #2}
+	\\[6pt]
+	~{#3}
+}
+
+\newcommand{\tr}{\mathsf{{\scriptscriptstyle T}}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\operatorname{e}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\op}[1]{\operatorname{#1}}
+
+\global\long\def\II{\mathds1}
+
+\newcommand{\SP}{\mathrm{S}}
+\newcommand{\IP}{\mathrm{I}}
+\newcommand{\HP}{\mathrm{H}}
+
+\global\long\def\ket#1{\left|#1\right\rangle }
+\global\long\def\bra#1{\left\langle #1\right|}
+\global\long\def\braket#1#2{\left\langle #1\middle|#2\right\rangle }
+\global\long\def\ketbra#1#2{\left|#1\vphantom{#2}\right\rangle \left\langle \vphantom{#1}#2\right|}
+\global\long\def\braopket#1#2#3{\left\langle #1\middle|#2\middle|#3\right\rangle }
+ 
+\begin{document}
+
+\begin{tikzpicture}
+
+\tikzset{boxed/.style={draw,rectangle,rounded corners=5pt,fill=white}}
+\tikzset{HP/.style={fill=green!2}}
+\tikzset{SP/.style={fill=red!4}}
+\tikzset{IP/.style={fill=yellow!5}}
+
+\tikzset{myBox/.style={draw,anchor=north,rectangle,rounded corners=5pt, fill=white}}
+\tikzset{myBoxL/.style={draw,anchor=north,rectangle,rounded corners=5pt, fill=gray!2}}
+\tikzset{myBoxM/.style={draw,anchor=north,rectangle,rounded corners=5pt, fill=red!4}}
+\tikzset{myBoxSI/.style={draw,anchor=north,rectangle,rounded corners=5pt, fill=green!2}}
+\tikzset{myBoxI/.style={draw,anchor=north,rectangle,rounded corners=5pt, fill=yellow!5}}
+\tikzset{myBoxE/.style={draw,anchor=north,rectangle,rounded corners=5pt, fill=blue!2}}
+\tikzset{myBoxP/.style={draw,anchor=north,rectangle,rounded corners=5pt, fill=cyan!2}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\node at (-29.2,-20.5) {};
+%\node at ( 29.2,-20.5) {};
+%\node at (-29.2, 20.5) {};
+%\node at (-29.2,-20.5) {};
+
+%\draw [yellow] (-29.2,-20.5) rectangle (29.2,20.5);
+%\draw [dashed, red] (-29.2cm,-20.5cm) rectangle (29.2cm,20.5cm);
+
+\node [anchor=south west, color=black] at (-29,-20.5) {
+	\sf Overview of representations of the dependence of operators and states in QFT 
+	~--~ by M.B.Kocic ~--~ Version 1.0.3 (2016-01-11)
+};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% S.P.
+
+\draw [dashed,color=red!30] (-11.5,-0.5) -- (11.5,-0.5);
+\draw [thick][-triangle 45] (7,2) -- (-6.75,2);
+\draw [thick][-triangle 45] plot[smooth, tension=.7] coordinates {(-2,-5) (-6,-3) (-7.98,1.16)};
+\draw [thick][-triangle 45] plot[smooth, tension=.7] coordinates {(8,1.5) (6,-3) (2.25,-5)};
+\draw [color=black!30!green][-triangle 45] (-2.5,-0.5) -- (-4.75,-2.25);
+\draw [color=black!30!red][-triangle 45] (2.5,-0.5) -- (4.75,-2.25);
+\draw [color=black!30!green][-triangle 45] (-5,-2.5) -- (-8.59,-4.95);
+\draw [color=black!30!red][-triangle 45] (5,-2.5) -- (8.59,-4.95);
+
+
+\node [boxed,fill=white,rounded corners=3mm,minimum height=2cm] at (-9,2.5) {
+	\begin{minipage}{4cm}\vspace{8mm}\center\large
+		$ {\color{blue} \ket{\alpha;t}^\SP } $ \\[0.5em]
+		$ A^\SP = A^\HP(t_0) $
+	\end{minipage}
+};
+
+\node [boxed,SP,rounded corners=3mm] at (-9,3.6) {
+	\begin{minipage}{4cm}\center\bf
+		Schr\"odinger\\Picture
+	\end{minipage}
+};
+
+\node [boxed,SP,minimum height=12mm] at (0,2) {
+	\begin{minipage}{30mm}\center\large
+		$ \mathcal{U}(t,t_0) $
+	\end{minipage}
+};
+
+\node at (0,3.1) {
+	Time-evolution operator
+};
+
+\node at (0,1) {
+	Governed by $H(t)$ using
+	\tikz[baseline=(char.base)]{
+		\node [shape=circle,draw,SP,inner sep=1pt] (char) {\textbf{1}}
+		}
+};
+
+\node [anchor=north west,text width=150mm] at (-27,18) {
+	\textbf{Schr\"odinger Picture}:\\[3pt]
+	$~\bullet~$ \textbf{State kets are time-dependent} (governed by the Hamiltonian). \\
+	$~\bullet~$ Operators are stationary. \\
+	$~\bullet~$ Base kets are stationary.
+};
+
+\node [boxed,SP,anchor=north,inner sep=3mm] at (-23,15) {
+	\begin{minipage}{80mm}
+		Schr\"odinger Equations of Motion (I) \vspace{-1mm}
+		\begin{gather}
+			\nonumber \ii \frac{\dd}{\dd t} \ket{\alpha;t}^\SP = H(t) \, \ket{\alpha;t}^\SP \\
+			\nonumber \ket{\alpha;t}^\SP |_{t\to t_0} = \ket{\alpha;t_0}^\SP = \ket{\alpha}^\HP 
+		\end{gather}
+	\end{minipage}
+};
+
+\node [boxed,anchor=north,inner sep=3mm] at (-23,11.9) {
+	\begin{minipage}{80mm}
+		Time-evolution (unitary) operator: \vspace{-1mm}
+		\begin{align}
+			\nonumber \ket{\alpha;t}^\SP &= \mathcal{U}(t,t_0) \, \ket{\alpha;t_0}^\SP
+		\end{align}
+	\end{minipage}
+};
+
+\node [boxed,anchor=north,inner sep=3mm] at (-23,9.9) {
+	\begin{minipage}{80mm}
+		Properties of $\mathcal{U}(t,t_0)$: \vspace{-2mm}
+		\begin{gather}
+			\nonumber \mathcal{U}(t,t_0)^\dagger \mathcal{U}(t,t_0) = \II \\
+			\nonumber \mathcal{U}(t_2,t_1) = \mathcal{U}(t_1,t_2)^\dagger \\
+			\nonumber \mathcal{U}(t_3,t_2) \mathcal{U}(t_2,t_1) = \mathcal{U}(t_3,t_1)
+		\end{gather}
+	\end{minipage}
+};
+
+\node [boxed,anchor=north,inner sep=3mm] at (-14,15) {
+	\begin{minipage}{80mm}
+		Schr\"odinger Equations of Motion (II) \vspace{-1mm}
+		\begin{gather}
+			\nonumber \ii \frac{\dd}{\dd t} \mathcal{U}(t,t_0) = H(t) \; \mathcal{U}(t,t_0) \\
+			\nonumber \mathcal{U}(t,t_0) |_{t\to t_0} = \II
+		\end{gather}
+	\end{minipage}
+};
+
+\node [boxed,anchor=north,inner sep=3mm] at (-14,11.9) {
+	\begin{minipage}{80mm}
+		The most general solution to EoM: \vspace{-1mm}
+		\begin{gather}
+			\nonumber \mathcal{U}(t,t_0) = \op{T} \bigg\{ \exp\!\Big( -\ii \intop^t_{t_0} \dd t^\prime H(t^\prime) \Big) \bigg\}
+			\quad
+		\end{gather}
+	\end{minipage}
+};
+
+\node [shape=circle,draw,SP,inner sep=2pt] at (-10.2,13.5) {\large\textbf{1}};
+\node [shape=circle,draw,SP,inner sep=2pt] at (-10.2,10.1) {\large\textbf{2}};
+
+\node [boxed,anchor=north,inner sep=3mm] at (-13,8.8) {
+	\begin{minipage}{80mm}
+		Solution when $\partial H/\partial t = 0$\,: \vspace{-1mm}
+		\begin{gather}
+			\nonumber \mathcal{U}(t,t_0) = \exp\!\big( -\ii H\,(t-t_0) \big)
+		\end{gather}
+	\end{minipage}
+};
+
+\node [boxed,anchor=north,inner sep=3mm] at (-22,6.5) {
+	\begin{minipage}{100mm}
+		\textbf{Dyson series}: \\[5pt]
+		Solution to Schr\"odinger's EoM for any $H(t)$ where 
+		$H(t^\prime)$ and $H(t^{\prime\prime})$
+		do not commute at different times $t^{\prime}\ne t^{\prime\prime}$.
+		\\[5pt]
+		Rewrite
+		\tikz[baseline=(char.base)]{
+			\node [shape=circle,draw,SP,inner sep=1pt] (char) {\textbf{1}}
+  		}
+		as the integral equation, \vspace{-1mm}
+		\begin{align}
+			\nonumber \int^t_{t_0} \dd t^\prime \; \mathcal{U}(t^\prime,t_0) &= 
+				-\ii \int^t_{t_0} \dd t^\prime \; H(t) \; \mathcal{U}(t^\prime,t_0), \\
+			\nonumber \mathcal{U}(t,t_0) &= 
+				\II -\ii \int^t_{t_0} \dd t_1 \; H(t_1) \; \mathcal{U}(t_1,t_0).
+		\end{align}
+		Then reqursively expand $\mathcal{U}(t_1,t_0)$ in the integrand,
+		\begin{align}
+			\nonumber \mathcal{U}(t,t_0) &= 
+				\II -\ii \int^t_{t_0} \dd t_1 \; H(t) \; \mathcal{U}(t_1,t_0) + ... \\
+			\nonumber & + (-\ii)^n \int^t_{t_0} \dd t_1 ... \int^{t_{n-1}}_{t_0} \dd t_n \; H(t_1)\cdots H(t_n)+...
+		\end{align}
+		After introducing the time-ordering, we get,
+		\begin{align}
+			\nonumber \mathcal{U}(t,t_0) &= 
+			\sum_{n=0}^\infty \frac{(-\ii)^n}{n!} \int^t_{t_0} \!\dd t_1 ... \int^t_{t_0} \!\dd t_n 
+				\op{T} \big\{ H(t_1)\cdots H(t_n) \big\}
+		\end{align}
+		or in the condensed form, 
+		\tikz[baseline=(char.base)]{
+			\node [shape=circle,draw,SP,inner sep=1pt] (char) {\textbf{2}}
+  		}\,.
+	\end{minipage}
+};
+
+\draw [-triangle 45,ultra thick] (-18,9) -- (-18,6.5);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% H.P.
+
+\node [boxed,fill=white,rounded corners=3mm,minimum height=2cm] at (9,2.5) {
+	\begin{minipage}{4cm}\vspace{8mm}\center\large
+		$ \ket{\alpha}^\HP \equiv \ket{\alpha;t_0}^\SP $ \\[0.5em]
+		$ {\color{blue} A^\HP(t) } $
+	\end{minipage}
+};
+
+\node [boxed,HP,rounded corners=3mm] at (9,3.6) {
+	\begin{minipage}{4cm}\center\bf
+		Hesienberg\\Picture
+	\end{minipage}
+};
+
+\node [anchor=north west,text width=150mm] at (8.5,18) {
+	\textbf{Heisenberg Picture}:\\[3pt]
+	$~\bullet~$ State kets are stationary. \\
+	$~\bullet~$ \textbf{Operators are time-dependent} (governed by the Hamiltonian). \\
+	$~\bullet~$ Base kets are time-dependent (evolve in reverse wrt observables).
+};
+
+\node [anchor=north] at (0,18) {
+	\color{red}\textbf{In QFT we use the Heisenberg picture!}
+};
+
+\draw [red][-triangle 45,ultra thick] (5,17.65) -- (6,17.65);
+
+\node [boxed,anchor=north,inner sep=3mm] at (0,15) {
+	\begin{minipage}{80mm}
+		For states: \vspace{-1mm}
+		\begin{align}
+			\nonumber \ket{\alpha;t}^\SP &= \mathcal{U}(t,t_0) \, \ket{\alpha}^\HP \\
+			\nonumber \ket{\alpha;t_0}^\SP &= \ket{\alpha}^\HP
+		\end{align}
+		For operators: \vspace{-1mm}
+		\begin{align}
+			\nonumber A^\HP(t) &= \mathcal{U}^\dagger(t,t_0) \; A^\SP \; \mathcal{U}(t,t_0) \\
+			\nonumber A^\HP(t_0) &= A^\SP
+		\end{align}
+		The last holds also for the Hamiltonian $H$: \vspace{-1mm}
+		\begin{align}
+			\nonumber H^\HP(t) &= \mathcal{U}^\dagger(t,t_0) \; H^\SP \; \mathcal{U}(t,t_0) \\
+			\nonumber H^\HP(t_0) &= H^\SP
+		\end{align}
+		If $\partial H/\partial t = 0$ then $ H^\HP = H^\SP \equiv H $.
+	\end{minipage}
+};
+
+\node [anchor=south] at (0,15.25) {\bf
+	Covariance between S.P. and H.P.
+};
+\draw [triangle 45-triangle 45] (-5.5,15.15) -- (5.5,15.15);
+
+
+\node [boxed,HP,anchor=north,inner sep=3mm] at (12.5,15) {
+	\begin{minipage}{80mm}
+		Heisenberg Equations of Motion \vspace{-1mm}
+		\begin{gather}
+			\nonumber \ii \frac{\dd}{\dd t} A^\HP(t) = \big[ A^\HP(t) , H^\HP(t) \big] + \frac{\partial}{\partial t} A^\HP(t) \\
+			\nonumber A^\HP(t) |_{t\to t_0} = A^\HP(t_0) = A^\SP
+		\end{gather}
+	\end{minipage}
+};
+
+
+\node [boxed,anchor=north,inner sep=3mm] at (12.5,12) {
+	\begin{minipage}{80mm}
+		Example of states (in Fock space): \vspace{-1mm}
+		\begin{align}
+			\nonumber \ket{n_{\mathbf{k}}}^\HP  &= \frac{1}{\sqrt{n!}}\big(a^\dagger(\mathbf{k})\big)^n \ket{0}^\HP \\
+			\nonumber \ket{1_{\mathbf{p},r}}^\HP  &= \ket{\ee^-,\mathbf{p},r}^\HP = c^\dagger_r(\mathbf{p})\ket{0}^\HP \\
+			\nonumber \ket{1_{\mathbf{p_1},r_1};\,\overline{1}_{\mathbf{p_2},r_2}}^\HP 
+			&= \ket{\ee^-,\mathbf{p_1},r_1;\,\ee^+,\mathbf{p_2},r_2}^\HP
+		\end{align}
+	\end{minipage}
+};
+
+\node [boxed,anchor=north,inner sep=3mm] at (12.5,8) {
+	\begin{minipage}{80mm}
+		Example of operators: \vspace{-2mm}
+		\begin{gather}
+			\nonumber \phi(\mathbf{x})^\SP, a^\SP(\mathbf{k}), c^\dagger_r(\mathbf{p}) \\[3pt]
+			\nonumber \phi(\mathbf{x},t)^\HP = \mathcal{U}^\dagger(t) \, \phi(\mathbf{x})^\SP \, \mathcal{U}(t) 
+		\end{gather}
+	\end{minipage}
+};
+
+\node [boxed,anchor=north,inner sep=3mm] at (22.5,15) {
+	\begin{minipage}{100mm}
+		Example of Heisenberg EoM. Starting from, \vspace{-1mm}
+		\begin{align}
+			\nonumber \phi(\mathbf{x})^\SP &= 
+				\sum_\mathbf{k} \frac{1}{\sqrt{2V\omega_{\mathbf{k}}}}
+				\Big(
+				a^\SP(\mathbf{k}) \ee^{\ii \mathbf{k}\cdot\mathbf{x}} 
+				+ a^{\dagger\,\SP}(\mathbf{k}) \ee^{-\ii \mathbf{k}\cdot\mathbf{x}} 
+				\Big),\\
+			\nonumber \phi(\mathbf{x},t)^\HP &= 
+				\sum_\mathbf{k} \frac{1}{\sqrt{2V\omega_{\mathbf{k}}}}
+				\Big(
+				a^\HP(\mathbf{k},t) \ee^{\ii \mathbf{k}\cdot\mathbf{x}} 
+				+ a^{\dagger\,\HP}(\mathbf{k},t) \ee^{-\ii \mathbf{k}\cdot\mathbf{x}} 
+				\Big),\\
+			\nonumber H^\SP &= 
+				\sum_\mathbf{k} \omega_{\mathbf{k}} \; a^{\dagger\,\SP}(\mathbf{k}) \, a^\SP(\mathbf{k}).
+		\end{align}
+		The EoM reads, \vspace{-2mm}
+		\begin{align}
+			\nonumber \ii \frac{\dd}{\dd t} a^\HP(\mathbf{k},t) &= \big[ a^\HP(\mathbf{k},t) , H^\HP(t) \big], \\
+			\nonumber \text{initial cond.:} ~&~~  a^\HP(\mathbf{k},t=0) = a^\SP(\mathbf{k}),
+		\end{align}
+		where, \vspace{-4mm}
+		\begin{align}
+			\nonumber a^\HP(\mathbf{k},t) &= \mathcal{U}^\dagger(t) \, a^\SP(\mathbf{k})\, \mathcal{U}(t), \\
+			\nonumber H^\HP(t) &= \mathcal{U}^\dagger(t) \, H^\SP \, \mathcal{U}(t), \\
+			\nonumber \mathcal{U}(t) &= \exp\left(-\ii H^\SP t \right).
+		\end{align}
+		Using $[H^\SP,a^\SP(\mathbf{k})] = -\omega_\mathbf{k}\,a^\SP(\mathbf{k})$,
+		the EoM becomes, \vspace{-2mm}
+		\begin{align}
+			\nonumber \ii \frac{\dd}{\dd t} a^\HP(\mathbf{k},t) &= \omega_{\mathbf{k}} \, a^\HP(\mathbf{k},t),
+		\end{align}
+		with the solution (note that  $H \equiv H^\SP = H^\HP$), \vspace{-1mm}
+		\begin{gather}
+			\nonumber a^\HP(\mathbf{k},t) = a^\HP(\mathbf{k}) \ee^{-\ii \omega_{\mathbf{k}} t },\\[3pt]
+			\nonumber \phi(\mathbf{x},t)^\HP = 
+				\sum_\mathbf{k} \frac{1}{\sqrt{2V\omega_{\mathbf{k}}}}
+				\Big(
+				a^\SP(\mathbf{k}) \ee^{-\ii kx} 
+				+ a^{\dagger\,\SP}(\mathbf{k}) \ee^{\ii kx} 
+				\Big).
+		\end{gather}
+		Alternatively, we can solve for $\phi(x)$ directly from, \vspace{-1mm}
+		\begin{align}
+			\nonumber \ii \frac{\dd}{\dd t} \phi^\HP(\mathbf{x},t) &= \big[ \phi^\HP(\mathbf{x},t) , H^\HP(t) \big], \\
+			\nonumber \text{init.~cond.:~}~ & ~\phi^\HP(\mathbf{x},t=0) = \phi^\SP(\mathbf{x}),
+		\end{align}
+		using the Baker-Campbell-Hausdorff formula, \vspace{-1mm}
+		\begin{align}
+			\nonumber \ee^{A} B \ee^{-A} &= B + [A,B] + {\textstyle \frac{1}{2!}} [A,[A,B]] \\
+			\nonumber &\qquad + {\textstyle \frac{1}{n!}} [A,[A,\cdots,[A,B]\,]] + \dots .
+		\end{align}
+	\end{minipage}
+};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% I.P.
+
+\node [boxed,fill=white,rounded corners=3mm,minimum height=2cm] at (0,-4.6) {
+	\begin{minipage}{4cm}\vspace{8mm}\center\large\color{blue}
+		$ \ket{\alpha;t}^\IP $ \\[0.5em]
+		$ A^\IP(t) $
+	\end{minipage}
+};
+
+\node [boxed,IP,rounded corners=3mm] at (0,-3.5) {
+	\begin{minipage}{4cm}\center\bf
+		Interaction\\Picture
+	\end{minipage}
+};
+
+\node [boxed,HP,minimum height=12mm] at (-6.5,-3) {
+	\begin{minipage}{30mm}\center\large
+		$ \mathcal{U}_0(t,t_0) $
+	\end{minipage}
+};
+
+\node [boxed,SP,minimum height=12mm] at (6.5,-3) {
+	\begin{minipage}{30mm}\center\large
+		$ \mathcal{U}_\mathrm{int}(t,t_0) $
+	\end{minipage}
+};
+
+\node at (0,-1) {
+	\large\color{blue} $H = H_0 + H_\mathrm{int}$
+};
+\node at (0,-1.75) {
+	\large $\mathcal{U}(t,t_0) 
+	= \mathcal{U}_0(t,t_0) \; \mathcal{U}_\mathrm{int}(t,t_0)$
+};
+
+\node at (0,-0.25) {
+	Split
+};
+
+\node at (6.9598,-0.8342) { $\times$ };
+\node at (4.0032,-4.056) { $=$ };
+\node at (-3.7513,-4.0897) { $\times$ };
+\node at (-6.9835,-0.9716) { $=$ };
+\node at (4.4361,2.3053) { $\times$ };
+\node at (-4.0999,2.3275) { $=$ };
+
+\node at (-10,-3.5) {
+	Governed by $H_0$
+};
+\node at (-10,-4) {
+	(using H.P.)
+};
+
+\node at (10,-3.5) {
+	Governed by $H_\mathrm{int}$
+};
+\node at (10,-4) {
+	(using S.P.)
+};
+
+\node [boxed,HP,anchor=north,inner sep=3mm] at (-9,-5) {
+	\begin{minipage}{80mm}
+		Heisenberg EoM for $A^\IP(t)$ using $H_0$ \vspace{-1mm}
+		\begin{gather}
+			\nonumber \ii \frac{\dd}{\dd t} A^\IP(t) = \big[ A^\IP(t) , \,\boxed{H^\IP_0(t)}\, \big] \\
+			\nonumber A^\IP(t_0) = A^\HP(t_0) = A^\SP
+		\end{gather}
+	\end{minipage}
+};
+
+\node [boxed,SP,anchor=north,inner sep=3mm] at (9,-5) {
+	\begin{minipage}{80mm}
+		Schr\"odinger EoM for $\ket{\alpha;t}^\IP$ using $H_\mathrm{int}$ \vspace{-1mm}
+		\begin{gather}
+			\nonumber \ii \frac{\dd}{\dd t} \mathcal{U}_\mathrm{int}(t,t_0) = \,\boxed{H_\mathrm{int}(t)} \; \mathcal{U}_\mathrm{int}(t,t_0) \\
+			\nonumber \mathcal{U}_\mathrm{int}(t,t_0) |_{t\to t_0} = \II
+		\end{gather}
+	\end{minipage}
+};
+
+\node [anchor=south] at (0,-7.5) {\bf
+	Covariance between S.P., I.P. and H.P.
+};
+
+\node [boxed,anchor=north,inner sep=3mm] at (0,-7.5) {
+	\begin{minipage}{80mm}
+		For states: \vspace{-1mm}
+		\begin{align}
+			\nonumber \ket{\alpha;t}^\SP &= \mathcal{U}_0(t,t_0) \, \ket{\alpha;t}^\IP \\
+			\nonumber \ket{\alpha;t}^\IP &= \mathcal{U}_\mathrm{int}(t,t_0) \, \ket{\alpha}^\HP \\
+			\nonumber \ket{\alpha;t}^\SP &= \mathcal{U}_0(t,t_0) \, \mathcal{U}_\mathrm{int}(t,t_0) \, \ket{\alpha}^\HP \\
+			\nonumber \ket{\alpha;t_0}^\SP &= \ket{\alpha;t_0}^\IP = \ket{\alpha}^\HP
+		\end{align}
+		For operators: \vspace{-1mm}
+		\begin{align}
+			\nonumber A^\IP(t) &= \mathcal{U}_0^\dagger(t,t_0) \; A^\SP \; \mathcal{U}_0(t,t_0) \\
+			\nonumber A^\HP(t_0) &= \nonumber A^\IP(t_0) = A^\SP
+		\end{align}
+		Note: \vspace{-4mm}
+		\begin{align}
+			\nonumber H^\IP_\mathrm{int}(t) &= \mathcal{U}_0^\dagger(t,t_0) \; H^\SP_\mathrm{int} \; \mathcal{U}_0(t,t_0) \\
+			\nonumber H^\IP_0(t) &= \mathcal{U}_0^\dagger(t,t_0) \; H^\SP_0 \; \mathcal{U}_0(t,t_0) \\
+			\nonumber H^\IP_0 &= H^\IP_0(t_0) = H^\SP_0
+		\end{align}
+	\end{minipage}
+};
+
+
+\node [boxed,IP,anchor=north,inner sep=3mm] at (9,-8.5) {
+	\begin{minipage}{80mm}
+		\begin{center}
+		\textbf{Limit I.P. $\to$ H.P.}
+		\end{center}\vspace{-3mm}
+		In the limit,\vspace{-3mm}
+		\begin{gather}
+			\nonumber H_\mathrm{int} \to 0
+		\end{gather}
+		we have,\vspace{-3mm}
+		\begin{alignat}{4}
+			\nonumber H &\to H_0 & \qquad
+			\nonumber \ket{\alpha;t}^\IP &\to \ket{\alpha}^\HP \\
+			\nonumber \mathcal{U}_\mathrm{int}(t) &\to \II & \qquad
+			\nonumber \phi^\IP(x) &\to \phi^\HP(x) \\
+			\nonumber \mathcal{U}(t) &\to \mathcal{U}_0(t) 
+		\end{alignat}
+		We can replace "I" by "H" in all the expressions (this is
+		the limit when the full-theory becomes free). This also means
+		that, by introducting $H_\mathrm{int}$, we have moved the
+		operators from H.P. (solving the free-theory) to I.P.
+	\end{minipage}
+};
+\node [boxed,anchor=north,text width=80mm,text justified,inner sep=3mm] at (-9,-8.5) {
+	In the Interaction Picture, the fields $\phi^\IP$ retain the
+	properties of the free fields. (The fields $\phi^\IP$ are the solutions
+	to the free-theory EoM for $H_0$ obtained from $\mathcal{L}_0$.)
+	\\[5pt]
+	\quad We postulate that the canonical commuatation relations are valid also
+	for the \textit{interacting field operators} with no gradient couplings
+	that modify the conjugate field (i.e., when the interaction Lagrangian
+	$\mathcal{L}_\mathrm{int}$ does not contain derivatives wrt fields).
+	\\[5pt]
+	At any fixed time, the full-interacting creator and annihilation
+	operators satisfy the same algebra as in the free-theory (due to
+	translation invariance of the Fock space).
+};
+
+\node [boxed,anchor=north,text width=100mm,text justified,inner sep=3mm] at (22.5,-5.75) {
+	N.b. There is no physical content in the $\phi(x)$ operator. The physical
+	content is in the algebra $a(\mathbf{k})$, $a^\dagger(\mathbf{k})$, and
+	in the Hamiltonian $H$.
+};
+
+\node [boxed,anchor=north,text width=100mm,text justified,inner sep=3mm] at (22.5,-9) {
+	\textbf{Wick's theorem} is a method of expanding the time-ordered products
+	in the S-matrix as a sum of	normal products.
+	It exploits a similar behaviour of the time-ordering $\op{T}\{\}$ and 
+	the normal-ordering $\op{N}\{\}$ meta operators. Namely, they (i) both treat
+	boson/fermions equally, and (ii) both suppress equal-time 
+	(anti)commutation relations.
+	\\[5pt]
+	For two boson operators, the following relation holds:
+	\begin{align}
+		\nonumber AB=\mathrm{N}\left(AB\right)+\left[A^{+},B^{-}\right]
+	\end{align}
+	For two fermion operators we have anti-commutator instead. 
+	The last object is a c-number and becomes the propagator
+	when time-ordered. 
+	Wick's theorem states that, at unequal-times, for any two operators
+	it holds,
+	\begin{align}
+		\nonumber \mathrm{T}\left\{ AB\right\} =\mathrm{N}\left\{AB\right\}
+		+ \braopket{0}{AB}{0}
+	\end{align}
+	The last term is the so called \textbf{contraction} between the fields.
+	The contractions are always between virtual (off-shell) particles and 
+	never observed.
+};
+
+\node [red,anchor=south,rotate=45] at (12.5,1.5) {\bf
+	The full-theory is here.
+};
+
+\draw  [red,-triangle 45] plot[smooth, tension=.7] coordinates {(11.5,1.5) (13,3.5) (11.5,3)};
+
+\node [red,anchor=south,rotate=45] at (-13.5,-4.5) {\bf
+	The free-theory is here.
+};
+
+\draw  [red,-triangle 45] plot[smooth, tension=.7] coordinates {(-12.5,-3.5) (-14.5,-6) (-13.5,-6.5)};
+
+\node [red,anchor=south,rotate=45] at (14,-3) {\bf
+	Perturbations are here.
+};
+
+\draw  [red,-triangle 45] plot[smooth, tension=.7] coordinates {(13.0831,-4.192) (14.7566,-3.0696) (13.5,-5.5)};
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% S-matrix
+
+\node [boxed,fill=blue!2,anchor=north,inner sep=3mm] at (-22,-9.5) {
+	\begin{minipage}{100mm}
+		The S-matrix, definition: \vspace{-2mm}
+		\large\color{blue} \begin{align}
+			\nonumber S &\equiv \mathcal{U}_\mathrm{int}(\infty,-\infty)
+		\end{align}
+		\vspace{3mm}
+	\end{minipage}
+};
+
+\node [boxed,fill=cyan!2,anchor=north,inner sep=3mm] at (-22,-11.5) {
+	\begin{minipage}{100mm}
+		Expansion: \vspace{-2mm}
+		\begin{equation}
+			\nonumber S = \sum_{n=0}^\infty S^{(n)}, 
+			\text{ where } S^{(n)} \text{ is $n$-th order:}
+		\end{equation}
+		\vspace{-5mm}
+		\begin{align}
+			\nonumber S^{(n)} &= 
+			\frac{(-\ii)^n}{n!} \int^\infty_{-\infty} \!\dd t_1 ... \int^\infty_{-\infty} \!\dd t_n \; 
+				\op{T} \big\{ H^\IP_\mathrm{int}(t_1)\cdots H^\IP_\mathrm{int}(t_n) \big\} \\
+			\nonumber &= \frac{(-\ii)^n}{n!} \int\!\dd x_1 ... \int\!\dd x_n \; 
+				\op{T} \big\{ \mathcal{H}^\IP_\mathrm{int}(x_1)\cdots \mathcal{H}^\IP_\mathrm{int}(x_n) \big\}\\
+			\nonumber &= \frac{\ii^n}{n!} \int\!\dd x_1 ... \int\!\dd x_n \; 
+				\op{T} \big\{ \mathcal{L}^\IP_\mathrm{int}(x_1)\cdots \mathcal{L}^\IP_\mathrm{int}(x_n) \big\}
+		\end{align}
+		where, \vspace{-4mm}\large\color{blue}
+		\begin{align}
+			\nonumber \mathcal{L}^\IP_\mathrm{int}(x) := \mathcal{L}_\mathrm{int}[\phi^\IP](x)
+		\end{align}
+	\end{minipage}
+};
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\node [color=black] at (0,19.3) {
+	\huge\sf The Schr\"odinger, Heisenberg and Interaction Pictures in QFT (FK8017 HT15)
+};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{tikzpicture}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
